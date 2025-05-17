@@ -80,7 +80,8 @@ class Router {
 const templates = {
     home: () => {
         const template = document.getElementById('home-template');
-        return template.content.cloneNode(true);
+        const clone = template.content.cloneNode(true);
+        return clone.outerHTML || new XMLSerializer().serializeToString(clone);
     },
     
     planet: (data) => {
@@ -96,7 +97,7 @@ const templates = {
         clone.querySelector('.author').textContent = data.author;
         clone.querySelector('.description').textContent = data.description;
         
-        return clone;
+        return clone.outerHTML || new XMLSerializer().serializeToString(clone);
     },
 
     species: (data) => {
@@ -112,7 +113,7 @@ const templates = {
         clone.querySelector('.author').textContent = data.author;
         clone.querySelector('.description').textContent = data.description;
         
-        return clone;
+        return clone.outerHTML || new XMLSerializer().serializeToString(clone);
     },
 
     event: (data) => {
@@ -127,7 +128,7 @@ const templates = {
         clone.querySelector('.author').textContent = data.author;
         clone.querySelector('.description').textContent = data.description;
         
-        return clone;
+        return clone.outerHTML || new XMLSerializer().serializeToString(clone);
     }
 };
 
