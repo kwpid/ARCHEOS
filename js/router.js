@@ -71,21 +71,23 @@ class Router {
         }
     }
 
+    // Available content files
+    static contentFiles = {
+        planets: ['nexus-prime'],
+        species: ['crystal-entities'],
+        events: ['nexus-discovery'],
+        artifacts: []
+    };
+
     async loadAllData(type) {
         try {
-            const response = await fetch(`data/${type}/`);
-            if (!response.ok) throw new Error('Directory not found');
-            
-            const files = await response.json();
+            const files = Router.contentFiles[type] || [];
             const data = await Promise.all(
-                files
-                    .filter(file => file.endsWith('.json') && file !== 'template.json')
-                    .map(file => this.loadData(type, file.replace('.json', '')))
+                files.map(file => this.loadData(type, file))
             );
-            
             return data;
         } catch (error) {
-            console.error(`Error loading ${type} directory:`, error);
+            console.error(`Error loading ${type} data:`, error);
             throw error;
         }
     }
