@@ -140,7 +140,18 @@ const routes = {
             .map(([id, planet]) => `
                 <div class="list-item">
                     <h3><a href="#/planet/${id}">${planet.name}</a></h3>
-                    <span class="status ${planet.status.toLowerCase()}">${planet.status}</span>
+                    <div class="metadata">
+                        <div class="metadata-item">
+                            <span class="label">Classification</span>
+                            <span class="value">${planet.classification}</span>
+                        </div>
+                        <div class="metadata-item">
+                            <span class="label">Discovery Date</span>
+                            <span class="value">${planet.discoveryDate}</span>
+                        </div>
+                    </div>
+                    <p class="description">${planet.description.substring(0, 150)}...</p>
+                    <div class="status ${planet.status.toLowerCase()}">${planet.status}</div>
                 </div>
             `).join('');
         return `<div class="page"><h1>Planets</h1><div class="list-container">${planetsList}</div></div>`;
@@ -155,7 +166,18 @@ const routes = {
             .map(([id, species]) => `
                 <div class="list-item">
                     <h3><a href="#/species/${id}">${species.name}</a></h3>
-                    <span class="status ${species.status.toLowerCase()}">${species.status}</span>
+                    <div class="metadata">
+                        <div class="metadata-item">
+                            <span class="label">Classification</span>
+                            <span class="value">${species.classification}</span>
+                        </div>
+                        <div class="metadata-item">
+                            <span class="label">Discovery Date</span>
+                            <span class="value">${species.discoveryDate}</span>
+                        </div>
+                    </div>
+                    <p class="description">${species.description.substring(0, 150)}...</p>
+                    <div class="status ${species.status.toLowerCase()}">${species.status}</div>
                 </div>
             `).join('');
         return `<div class="page"><h1>Species</h1><div class="list-container">${speciesList}</div></div>`;
@@ -170,7 +192,18 @@ const routes = {
             .map(([id, event]) => `
                 <div class="list-item">
                     <h3><a href="#/event/${id}">${event.name}</a></h3>
-                    <span class="status ${event.status.toLowerCase()}">${event.status}</span>
+                    <div class="metadata">
+                        <div class="metadata-item">
+                            <span class="label">Date</span>
+                            <span class="value">${event.date}</span>
+                        </div>
+                        <div class="metadata-item">
+                            <span class="label">Location</span>
+                            <span class="value">${event.additionalInfo.location}</span>
+                        </div>
+                    </div>
+                    <p class="description">${event.description.substring(0, 150)}...</p>
+                    <div class="status ${event.status.toLowerCase()}">${event.status}</div>
                 </div>
             `).join('');
         return `<div class="page"><h1>Events</h1><div class="list-container">${eventsList}</div></div>`;
