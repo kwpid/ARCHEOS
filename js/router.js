@@ -17,7 +17,28 @@ class Router {
 
     async handleRoute() {
         const hash = window.location.hash.slice(1) || '/';
-        const route = this.routes[hash] || this.routes['/404'];
+        
+        // Find matching route
+        let route = this.routes['/404'];
+        let params = null;
+        
+        // Check for exact match first
+        if (this.routes[hash]) {
+            route = this.routes[hash];
+        } else {
+            // Check for parameterized routes
+            for (const [pattern, handler] of Object.entries(this.routes)) {
+                if (pattern.includes(':')) {
+                    const regexPattern = pattern.replace(/:[^/]+/g, '([^/]+)');
+                    const match = hash.match(new RegExp(`^${regexPattern}$`));
+                    if (match) {
+                        route = handler;
+                        params = match.slice(1);
+                        break;
+                    }
+                }
+            }
+        }
         
         // Show loading screen
         this.loadingScreen.classList.add('active');
@@ -27,7 +48,7 @@ class Router {
             await new Promise(resolve => setTimeout(resolve, 500));
             
             // Load and render the page
-            const content = await route();
+            const content = await (params ? route(...params) : route());
             this.contentDiv.innerHTML = content;
             
             // Update active nav link
@@ -76,6 +97,37 @@ const templates = {
         clone.querySelector('.description').textContent = data.description;
         
         return clone;
+    },
+
+    species: (data) => {
+        const template = document.getElementById('species-template');
+        const clone = template.content.cloneNode(true);
+        
+        // Fill in the template with data
+        clone.querySelector('.page-title').textContent = data.name;
+        clone.querySelector('.classification').textContent = data.classification;
+        clone.querySelector('.discovery-date').textContent = data.discoveryDate;
+        clone.querySelector('.status').textContent = data.status;
+        clone.querySelector('.status').classList.add(data.status.toLowerCase());
+        clone.querySelector('.author').textContent = data.author;
+        clone.querySelector('.description').textContent = data.description;
+        
+        return clone;
+    },
+
+    event: (data) => {
+        const template = document.getElementById('event-template');
+        const clone = template.content.cloneNode(true);
+        
+        // Fill in the template with data
+        clone.querySelector('.page-title').textContent = data.name;
+        clone.querySelector('.date').textContent = data.date;
+        clone.querySelector('.status').textContent = data.status;
+        clone.querySelector('.status').classList.add(data.status.toLowerCase());
+        clone.querySelector('.author').textContent = data.author;
+        clone.querySelector('.description').textContent = data.description;
+        
+        return clone;
     }
 };
 
@@ -107,6 +159,11 @@ const routes = {
             `).join('');
         return `<div class="page"><h1>Species</h1><div class="list-container">${speciesList}</div></div>`;
     },
+    '/species/:id': (id) => {
+        const data = species[id];
+        if (!data) return '<div class="error">Species not found</div>';
+        return templates.species(data);
+    },
     '/events': () => {
         const eventsList = Object.entries(events)
             .map(([id, event]) => `
@@ -116,6 +173,11 @@ const routes = {
                 </div>
             `).join('');
         return `<div class="page"><h1>Events</h1><div class="list-container">${eventsList}</div></div>`;
+    },
+    '/event/:id': (id) => {
+        const data = events[id];
+        if (!data) return '<div class="error">Event not found</div>';
+        return templates.event(data);
     },
     '/404': () => '<div class="page"><h1>404 - Page Not Found</h1><p>The requested page does not exist.</p></div>'
 };
