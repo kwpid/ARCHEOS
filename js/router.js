@@ -1,9 +1,12 @@
+import { planets } from './data/planets.js';
+import { species } from './data/species.js';
+import { events } from './data/events.js';
+
 class Router {
     constructor(routes) {
         this.routes = routes;
         this.contentDiv = document.getElementById('content');
         this.loadingScreen = document.getElementById('loading-screen');
-        this.dataCache = new Map();
         
         // Handle initial route
         this.handleRoute();
@@ -50,47 +53,6 @@ class Router {
             activeLink.classList.add('active');
         }
     }
-
-    async loadData(type, id) {
-        const cacheKey = `${type}/${id}`;
-        
-        if (this.dataCache.has(cacheKey)) {
-            return this.dataCache.get(cacheKey);
-        }
-
-        try {
-            const response = await fetch(`data/${type}/${id}.json`);
-            if (!response.ok) throw new Error('Data not found');
-            
-            const data = await response.json();
-            this.dataCache.set(cacheKey, data);
-            return data;
-        } catch (error) {
-            console.error(`Error loading ${type} data:`, error);
-            throw error;
-        }
-    }
-
-    // Available content files
-    static contentFiles = {
-        planets: ['nexus-prime'],
-        species: ['crystal-entities'],
-        events: ['nexus-discovery'],
-        artifacts: []
-    };
-
-    async loadAllData(type) {
-        try {
-            const files = Router.contentFiles[type] || [];
-            const data = await Promise.all(
-                files.map(file => this.loadData(type, file))
-            );
-            return data;
-        } catch (error) {
-            console.error(`Error loading ${type} data:`, error);
-            throw error;
-        }
-    }
 }
 
 // Page templates
@@ -120,58 +82,40 @@ const templates = {
 // Define routes
 const routes = {
     '/': () => templates.home(),
-    '/planets': async () => {
-        try {
-            const planets = await router.loadAllData('planets');
-            const planetsList = planets
-                .map(planet => `
-                    <div class="list-item">
-                        <h3><a href="#/planet/${planet.name.toLowerCase().replace(/\s+/g, '-')}">${planet.name}</a></h3>
-                        <span class="status ${planet.status.toLowerCase()}">${planet.status}</span>
-                    </div>
-                `).join('');
-            return `<div class="page"><h1>Planets</h1><div class="list-container">${planetsList}</div></div>`;
-        } catch (error) {
-            return '<div class="error">Error loading planets</div>';
-        }
+    '/planets': () => {
+        const planetsList = Object.entries(planets)
+            .map(([id, planet]) => `
+                <div class="list-item">
+                    <h3><a href="#/planet/${id}">${planet.name}</a></h3>
+                    <span class="status ${planet.status.toLowerCase()}">${planet.status}</span>
+                </div>
+            `).join('');
+        return `<div class="page"><h1>Planets</h1><div class="list-container">${planetsList}</div></div>`;
     },
-    '/planet/:id': async (id) => {
-        try {
-            const data = await router.loadData('planets', id);
-            return templates.planet(data);
-        } catch (error) {
-            return '<div class="error">Planet not found</div>';
-        }
+    '/planet/:id': (id) => {
+        const data = planets[id];
+        if (!data) return '<div class="error">Planet not found</div>';
+        return templates.planet(data);
     },
-    '/species': async () => {
-        try {
-            const species = await router.loadAllData('species');
-            const speciesList = species
-                .map(species => `
-                    <div class="list-item">
-                        <h3><a href="#/species/${species.name.toLowerCase().replace(/\s+/g, '-')}">${species.name}</a></h3>
-                        <span class="status ${species.status.toLowerCase()}">${species.status}</span>
-                    </div>
-                `).join('');
-            return `<div class="page"><h1>Species</h1><div class="list-container">${speciesList}</div></div>`;
-        } catch (error) {
-            return '<div class="error">Error loading species</div>';
-        }
+    '/species': () => {
+        const speciesList = Object.entries(species)
+            .map(([id, species]) => `
+                <div class="list-item">
+                    <h3><a href="#/species/${id}">${species.name}</a></h3>
+                    <span class="status ${species.status.toLowerCase()}">${species.status}</span>
+                </div>
+            `).join('');
+        return `<div class="page"><h1>Species</h1><div class="list-container">${speciesList}</div></div>`;
     },
-    '/events': async () => {
-        try {
-            const events = await router.loadAllData('events');
-            const eventsList = events
-                .map(event => `
-                    <div class="list-item">
-                        <h3><a href="#/event/${event.name.toLowerCase().replace(/\s+/g, '-')}">${event.name}</a></h3>
-                        <span class="status ${event.status.toLowerCase()}">${event.status}</span>
-                    </div>
-                `).join('');
-            return `<div class="page"><h1>Events</h1><div class="list-container">${eventsList}</div></div>`;
-        } catch (error) {
-            return '<div class="error">Error loading events</div>';
-        }
+    '/events': () => {
+        const eventsList = Object.entries(events)
+            .map(([id, event]) => `
+                <div class="list-item">
+                    <h3><a href="#/event/${id}">${event.name}</a></h3>
+                    <span class="status ${event.status.toLowerCase()}">${event.status}</span>
+                </div>
+            `).join('');
+        return `<div class="page"><h1>Events</h1><div class="list-container">${eventsList}</div></div>`;
     },
     '/404': () => '<div class="page"><h1>404 - Page Not Found</h1><p>The requested page does not exist.</p></div>'
 };
