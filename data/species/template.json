@@ -1,0 +1,16 @@
+{
+    "name": "Template Species Name",
+    "classification": "Species Classification",
+    "discoveryDate": "YYYY-MM-DD",
+    "status": "Safe|Hostile|Unexplored",
+    "author": "Author Name",
+    "description": "Detailed description of the species...",
+    "additionalInfo": {
+        "type": "Biological|Energy|Mechanical",
+        "intelligence": "Low|Medium|High",
+        "technology": "None|Primitive|Advanced",
+        "homeworld": "Planet Name",
+        "notableAbilities": [],
+        "threatLevel": "None|Low|Medium|High|Extreme"
+    }
+} 
