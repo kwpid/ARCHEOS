@@ -1,0 +1,15 @@
+{
+    "name": "Template Event Name",
+    "date": "YYYY-MM-DD",
+    "status": "Active|Resolved|Ongoing|Contained",
+    "author": "Author Name",
+    "description": "Detailed description of the event...",
+    "additionalInfo": {
+        "location": "Location Name",
+        "severity": "Low|Medium|High|Critical",
+        "involvedParties": [],
+        "relatedArtifacts": [],
+        "relatedSpecies": [],
+        "containmentProcedures": "Containment procedures if applicable..."
+    }
+} 

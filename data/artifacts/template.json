@@ -1,0 +1,16 @@
+{
+    "name": "Template Artifact Name",
+    "classification": "Artifact Classification",
+    "discoveryDate": "YYYY-MM-DD",
+    "status": "Safe|Contained|Unstable|Unknown",
+    "author": "Author Name",
+    "description": "Detailed description of the artifact...",
+    "additionalInfo": {
+        "origin": "Unknown|Planet Name|Species Name",
+        "age": "Unknown|Estimated Age",
+        "properties": [],
+        "effects": [],
+        "containmentRequirements": "Containment requirements if applicable...",
+        "threatLevel": "None|Low|Medium|High|Extreme"
+    }
+} 

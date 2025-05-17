@@ -1,1 +1,82 @@
-s
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCHEOS - Cosmic Archives</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h1>ARCHEOS</h1>
+                <button class="toggle-sidebar" id="toggleSidebar">≡</button>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#/" class="nav-link active">Home</a></li>
+                <li><a href="#/planets" class="nav-link">Planets</a></li>
+                <li><a href="#/species" class="nav-link">Species</a></li>
+                <li><a href="#/events" class="nav-link">Events</a></li>
+                <li><a href="#/artifacts" class="nav-link">Artifacts</a></li>
+                <li><a href="#/agents" class="nav-link">Agents</a></li>
+                <li><a href="#/about" class="nav-link">About</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div id="loading-screen" class="loading-screen">
+                <div class="loading-spinner"></div>
+            </div>
+            <div id="content" class="content">
+                <!-- Content will be dynamically loaded here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Templates -->
+    <template id="home-template">
+        <div class="page home-page">
+            <h1 class="main-title">ARCHEOS</h1>
+            <p class="quote">"Observe. Record. Contain. Understand. Survive."</p>
+            <div class="intro-text">
+                <p>Welcome to the ARCHEOS database, the central repository for all cosmic anomalies, extraterrestrial species, and unexplained phenomena. Here, we document the unknown, analyze the unexplained, and prepare for the unimaginable.</p>
+            </div>
+        </div>
+    </template>
+
+    <template id="planet-template">
+        <div class="page planet-page">
+            <div class="page-header">
+                <h1 class="page-title"></h1>
+                <span class="classification"></span>
+            </div>
+            <div class="metadata">
+                <div class="metadata-item">
+                    <span class="label">Discovery Date:</span>
+                    <span class="value discovery-date"></span>
+                </div>
+                <div class="metadata-item">
+                    <span class="label">Status:</span>
+                    <span class="value status"></span>
+                </div>
+                <div class="metadata-item">
+                    <span class="label">Author:</span>
+                    <span class="value author"></span>
+                </div>
+            </div>
+            <div class="description-box">
+                <p class="description"></p>
+            </div>
+        </div>
+    </template>
+
+    <script src="js/router.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
